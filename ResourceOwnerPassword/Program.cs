@@ -15,12 +15,14 @@ namespace ResourceOwnerFlow
         private const string ClientIdKey = "ClientId";
         private const string UserNameKey = "UserName";
         private const string PasswordKey = "Password";
+        private const string ScopesKey = "Scopes";
 
         private static string APIKey = ""; 
         private static string Endpoint = "";
         private static string ClientId = "";
         private static string UserName = "";
         private static string Password = "";
+        private static string Scopes = "";
 
         static void Main(string[] args)
         {
@@ -29,6 +31,7 @@ namespace ResourceOwnerFlow
             ClientId = ConfigurationManager.AppSettings[ClientIdKey];
             UserName = ConfigurationManager.AppSettings[UserNameKey];
             Password = ConfigurationManager.AppSettings[PasswordKey];
+            Scopes = ConfigurationManager.AppSettings[ScopesKey];
 
             ResourceOwnerFlow();
 
@@ -69,7 +72,7 @@ namespace ResourceOwnerFlow
             Console.WriteLine("");
             Console.WriteLine("");
             var client = new OAuth2Client(new Uri(Endpoint + "/issue/oidc/token"), ClientId, APIKey);
-            var taks = client.RequestResourceOwnerPasswordAsync(UserName, Password, "openid profile full_control offline_access");
+            var taks = client.RequestResourceOwnerPasswordAsync(UserName, Password, Scopes);
             taks.Wait(new TimeSpan(1, 0, 0));
             var tokenResponse = taks.Result;
 
